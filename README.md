@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div align="center">
 
 # ☁️📝 My Notes Cloud  
@@ -86,5 +87,3 @@ Flutter Developer
 <br/>
 Made with ❤️ using Flutter
 </div>
-
-
