@@ -48,6 +48,10 @@ mixin class Crud {
         return {"status": "error", "message": "HTTP ${response.statusCode}"};
       }
     } catch (e) {
+      // prossessing the status of no internet connection
+      if (e.toString().contains("SocketException")) {
+        return {"status": "no_internet", "message": e.toString()};
+      }
       print("Error=============================>$e");
       return {"status": "error", "message": e.toString()};
     }

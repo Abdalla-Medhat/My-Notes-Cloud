@@ -56,12 +56,62 @@ class _HomeState extends State<Home> with Crud {
           FutureBuilder(
             future: getNotes(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    "There is an unexpected error, please try again later",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
+              }
               if (snapshot.hasData) {
+                if (snapshot.data["status"] == "no_internet") {
+                  return Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          "No internet connection",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: MaterialButton(
+                            height: 45,
+                            minWidth: 140,
+                            color: Colors.pink,
+                            onPressed: () {
+                              setState(() {});
+                            },
+                            child: Text(
+                              "Refresh",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
                 // print("All data: ==============>${snapshot.data}");
                 if (snapshot.data["status"] == "failed") {
                   return Center(
                     child: Text(
-                      "There is no data found",
+                      "There is an unexpected error, please try again later",
                       style: TextStyle(
                         color: Colors.red,
                         fontSize: 18,
@@ -70,6 +120,7 @@ class _HomeState extends State<Home> with Crud {
                     ),
                   );
                 }
+
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -112,14 +163,11 @@ class _HomeState extends State<Home> with Crud {
                   },
                 );
               }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (snapshot.hasError) {
-                print(snapshot.error);
-              }
+
               return Center(
-                child: Text("Something went wrong, Error: ${snapshot.error}"),
+                child: Text(
+                  "Something went wrong, you can help us by reporting this Error: ${snapshot.error}",
+                ),
               );
             },
           ),
