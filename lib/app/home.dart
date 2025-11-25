@@ -111,9 +111,9 @@ class _HomeState extends State<Home> with Crud {
                 if (snapshot.data["status"] == "failed") {
                   return Center(
                     child: Text(
-                      "There is an unexpected error, please try again later",
+                      "There is no data to show",
                       style: TextStyle(
-                        color: Colors.red,
+                        color: Colors.green,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),

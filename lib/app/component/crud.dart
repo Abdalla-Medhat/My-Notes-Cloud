@@ -7,7 +7,6 @@ mixin class Crud {
   // Basic Authuntication header
   // Headers مع User-Agent و Accept JSON
   Map<String, String> get myheaders => {
-    // 'authorization': _basicAuth,
     'API-KEY': 'example',
     'Accept': 'application/json',
     'User-Agent': 'FlutterApp/1.0',
