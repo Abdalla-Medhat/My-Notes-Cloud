@@ -33,26 +33,42 @@ class _AddNoteState extends State<AddNote> with Crud {
         "user_note": pref!.getString("id"),
       });
       if (!mounted) {
-        isloding = false;
+        setState(() {
+          isloding = false;
+        });
         return;
       }
+      if (response == null) {
+        setState(() {
+          isloding = false;
+        });
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("No response from server")));
+        return;
+      }
+
       if (response["status"] == "success") {
         Navigator.pushNamedAndRemoveUntil(context, "home", (route) => false);
       } else {
-        isloding = false;
-        return ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("something went wrong")));
+        print("Error=============================>$response");
+        setState(() {
+          isloding = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "something went wrong",
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
+        );
+        return;
       }
     }
   }
 
   Future addNoteWithImage() async {
-    // if (myImg == null) {
-    //   return ScaffoldMessenger.of(
-    //     context,
-    //   ).showSnackBar(SnackBar(content: Text("please select an image first")));
-    // }
     if (formKey.currentState!.validate()) {
       setState(() {
         isloding = true;
@@ -68,20 +84,96 @@ class _AddNoteState extends State<AddNote> with Crud {
         isloding = false;
         return;
       }
-      if (response["status"] == "failed") {
-        print("--====================");
-        print(response["error"]);
-        print("--====================");
-        isloding = false;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              CircularProgressIndicator(color: Colors.white),
+              SizedBox(width: 10),
+              Text("Uploading file..."),
+            ],
+          ),
+          duration: Duration(hours: 2),
+        ),
+      );
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+      print("====>>response: $response");
+      if (response == null) {
+        // hide current snackbar
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("No response from server")));
         return;
+      }
+      if (response["status"] == "failed") {
+        print("====================");
+        print(response["error"]);
+        print("====================");
+        var error = response["error"];
+        if (error is String && error.contains("Image size exceeds 2 MB")) {
+          setState(() {
+            isloding = false;
+            // hide current snackbar
+          });
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Image size exceeds 2 MB",
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          );
+          return;
+        } else if (error is String && error.contains("Invalid image type")) {
+          setState(() {
+            isloding = false;
+          });
+          // hide current snackbar
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Invalid image type",
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          );
+          return;
+        } else {
+          setState(() {
+            isloding = false;
+          });
+          // hide current snackbar
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "something went wrong",
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          );
+          return;
+        }
       }
       if (response["status"] == "success") {
         Navigator.pushNamedAndRemoveUntil(context, "home", (route) => false);
       } else {
         isloding = false;
-        return ScaffoldMessenger.of(
+        // hide current snackbar
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+        ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text("something went wrong")));
+        return;
       }
     }
   }

@@ -80,6 +80,7 @@ mixin class Crud {
         print("Status code error=============================> ");
         print(myRequest.statusCode);
         print("Status code error=============================> ");
+        return {"status": "failed", "errors": "${myRequest.statusCode}"};
       }
     } catch (e) {
       print("Error=============================>$e");
