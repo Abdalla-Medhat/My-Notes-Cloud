@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'My Note Cloud',
       debugShowCheckedModeBanner: false,
       home: const Login(),
       initialRoute: pref!.getString("id") == null ? "login" : "home",
