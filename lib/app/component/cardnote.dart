@@ -18,32 +18,57 @@ class Cardnote extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Card(
+        color: Colors.pinkAccent,
         child: Row(
           children: [
             Expanded(
               flex: 1,
               child: notesModel.noteImg != null
-                  ? Image.network(
-                      "$imgLink${notesModel.noteImg}",
-                      width: 125,
-                      height: 125,
-                      fit: BoxFit.contain,
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        clipBehavior: Clip.antiAlias,
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.network(
+                          "$imgLink${notesModel.noteImg}",
+                          width: 125,
+                          height: 125,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     )
-                  : Image.asset("images/note_image.png", width: 100),
+                  : ClipRRect(
+                      clipBehavior: Clip.antiAlias,
+                      borderRadius: BorderRadius.circular(35),
+                      child: Image.asset(
+                        "images/note_image.png", // This Image has png background
+                        width: 125,
+                        height: 125,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
             ),
             Expanded(
               flex: 2,
               child: ListTile(
                 title: Text(
                   "${notesModel.noteTitle}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
                 subtitle: Text(
                   "${notesModel.noteContent}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
                 trailing: IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red),
+                  icon: const Icon(Icons.delete, color: Colors.blueGrey),
                   onPressed: onPressed,
                 ),
               ),

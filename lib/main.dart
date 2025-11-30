@@ -21,6 +21,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'My Note Cloud',
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          elevation: 33,
+          backgroundColor: Colors.pink,
+          foregroundColor: Colors.white,
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       home: const Login(),
       initialRoute: pref!.getString("id") == null ? "login" : "home",

@@ -26,7 +26,7 @@ class _HomeState extends State<Home> with Crud {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.lightGreen,
+        backgroundColor: Colors.pink,
         foregroundColor: Colors.white,
         onPressed: () {
           Navigator.pushNamed(context, "add");
@@ -34,10 +34,9 @@ class _HomeState extends State<Home> with Crud {
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: const Text("Home"),
+        title: const Text("Notes"),
         actions: [
           IconButton(
-            color: Colors.red,
             onPressed: () {
               pref!.clear();
               Navigator.pushNamedAndRemoveUntil(
