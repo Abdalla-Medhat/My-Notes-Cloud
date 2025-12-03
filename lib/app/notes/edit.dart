@@ -10,7 +10,7 @@ class EditNote extends StatefulWidget {
   final int id;
   final String title;
   final String content;
-  final String img;
+  final String? img;
   const EditNote({
     super.key,
     required this.img,
@@ -61,13 +61,24 @@ class _EditNoteState extends State<EditNote> with Crud {
 
       print("==========>>> $response");
       if (!mounted) {
-        isloding = false;
+        setState(() {
+          isloding = false;
+        });
         return;
       }
       if (response["status"] == "success") {
         Navigator.pushNamedAndRemoveUntil(context, "home", (route) => false);
+      } else if (response["status"] == "failed") {
+        setState(() {
+          isloding = false;
+        });
+        return ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("nothing changed")));
       } else {
-        isloding = false;
+        setState(() {
+          isloding = false;
+        });
         return ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text("something went wrong")));
